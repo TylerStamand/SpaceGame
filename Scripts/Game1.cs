@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace myGame
+namespace SpaceGame
 {
 
     public enum Direction {
@@ -16,8 +16,12 @@ namespace myGame
     public class Game1 : Game
     {
         public static GraphicsDeviceManager graphics;
+        public StateManager stateManager;
         private SpriteBatch spriteBatch;
   
+
+
+
         private Ship ship;
 
 
@@ -35,7 +39,7 @@ namespace myGame
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            stateManager = StateManager.Instance;
             base.Initialize();
         }
 
@@ -71,6 +75,8 @@ namespace myGame
             if(state.IsKeyDown(Keys.Space)) {
                 ship.Shoot();
             }
+            
+            stateManager.Update(gameTime);
 
             base.Update(gameTime);
             

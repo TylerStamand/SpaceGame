@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
 
-namespace myGame
+namespace SpaceGame
 {
     public class AnimatedSprite {
         public Texture2D Texture {get; set;}

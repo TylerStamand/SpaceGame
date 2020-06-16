@@ -1,10 +1,13 @@
 using System;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using System.Diagnostics;
 
-
-namespace myGame {
+namespace SpaceGame {
     public class Ship {
+
+        StateManager stateManager = StateManager.Instance;
+
         public Texture2D Texture {get; set;}
         public Vector2 Position {get; set;}
         public float Rotation {get; set;}
@@ -24,6 +27,9 @@ namespace myGame {
             width = Texture.Width;
             height = Texture.Height;
 
+
+            stateManager.UpdateEvent += new StateManager.UpdateHandler(Update);
+
         }
 
         public void Draw(SpriteBatch spriteBatch) {
@@ -31,6 +37,11 @@ namespace myGame {
             Rectangle destinationRectangle = new Rectangle((int)Position.X, (int)Position.Y, width, height);
             spriteBatch.Draw(Texture, destinationRectangle, sourceRectangle, Color.White, Rotation, new Vector2(width/2, height/2), SpriteEffects.None, 0f);
         }
+
+        public void Update(GameTime gameTime) {
+            Console.WriteLine("Update");
+        }
+
 
 
         public void Move(Direction direction) {
