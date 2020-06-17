@@ -8,25 +8,33 @@ namespace SpaceGame {
     public class Ship {
 
         private StateManager stateManager = StateManager.Instance;
-
-        public Vector2 Position {get; set;}
         public float Rotation {get; set;}
         public float Speed {get; set;}
         public float RotationSpeed {get; set;}
+        public Vector2 Position {
+            get {
+                return shipSprite.Position;
+            }
+            set {
+                shipSprite.Position = value;
+            }
+        }
 
         private string textureName;
+        private Texture2D shipTexture;
         private Sprite shipSprite;
-        private Sprite laserSprite;
+        private Texture2D laserTexture;
         private int width;
         private int height;
 
         public Ship(string textureName, Vector2 position, float speed = 1, float rotation = 0, float rotationSpeed = 1) {
             this.textureName = textureName;
-            Position = position;
             Rotation = rotation;
             Speed = speed;
             RotationSpeed = rotationSpeed;
-
+            shipSprite = new Sprite();
+            shipSprite.Position = position;
+            
         
             stateManager.DrawEvent += new StateManager.DrawHandler(Draw);
             stateManager.LoadEvent += new StateManager.LoadHandler(Load);
@@ -37,17 +45,19 @@ namespace SpaceGame {
         }
 
         public void Load(ContentManager content) {
-            shipSprite = new Sprite(content.Load<Texture2D>("ship"));
-            laserSprite = new Sprite(content.Load<Texture2D>("laser"));
+            shipTexture = content.Load<Texture2D>(textureName);
+            shipSprite.Texture = shipTexture;
+            laserTexture = content.Load<Texture2D>("laser");
 
-            width = shipSprite.Texture.Width;
-            height = shipSprite.Texture.Height;
+            width = shipTexture.Width;
+            height = shipTexture.Height;
         }
 
         public void Draw(SpriteBatch spriteBatch) {
             Rectangle sourceRectangle = new Rectangle(0,0, width, height);
             Rectangle destinationRectangle = new Rectangle((int)Position.X, (int)Position.Y, width, height);
-            spriteBatch.Draw(shipSprite.Texture, destinationRectangle, sourceRectangle, Color.White, Rotation, new Vector2(width/2, height/2), SpriteEffects.None, 0f);
+            
+            spriteBatch.Draw(shipSprite.Texture, shipSprite.Position, sourceRectangle, Color.White, Rotation, new Vector2(width/2, height/2), 1, SpriteEffects.None, 0f);
         }
 
         public void Update(GameTime gameTime) {
@@ -106,14 +116,15 @@ namespace SpaceGame {
                 Y = changeY + Position.Y;
             }
 
-            Position = new Vector2(X, Y);
+            shipSprite.Position = new Vector2(X, Y);
         }
 
         public void Shoot () {
+            Sprite laserSprite = new Sprite(laserTexture);
             laserSprite.Position = Position;
             Projectile laser = new Projectile(laserSprite);
             laser.Rotation = Rotation;
-            laser.Speed = 1f;
+            laser.Speed = 10f;
         }
     }
 }
