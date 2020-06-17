@@ -46,7 +46,7 @@ namespace SpaceGame {
         {
             float positionX = Sprite.Position.X;
             float positionY = Sprite.Position.Y;
-            Vector2 newPosition = new Vector2(positionX + (Speed * MathF.Cos(Rotation)), positionY + ( Speed * MathF.Cos(Rotation)));
+            Vector2 newPosition = new Vector2(positionX - (Speed * MathF.Sin(Rotation)), positionY + ( Speed * MathF.Cos(Rotation)));
             Sprite.Position = newPosition;
         }
     }
