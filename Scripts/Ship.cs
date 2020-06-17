@@ -1,45 +1,57 @@
 using System;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
 using System.Diagnostics;
 
 namespace SpaceGame {
     public class Ship {
 
-        StateManager stateManager = StateManager.Instance;
+        private StateManager stateManager = StateManager.Instance;
 
-        public Texture2D Texture {get; set;}
         public Vector2 Position {get; set;}
         public float Rotation {get; set;}
         public float Speed {get; set;}
         public float RotationSpeed {get; set;}
 
+        private string textureName;
+        private Sprite shipSprite;
+        private Sprite laserSprite;
         private int width;
         private int height;
 
-        public Ship(Texture2D texture, Vector2 position, float speed = 1, float rotation = 0, float rotationSpeed = 1) {
-            Texture = texture;
+        public Ship(string textureName, Vector2 position, float speed = 1, float rotation = 0, float rotationSpeed = 1) {
+            this.textureName = textureName;
             Position = position;
             Rotation = rotation;
             Speed = speed;
             RotationSpeed = rotationSpeed;
 
-            width = Texture.Width;
-            height = Texture.Height;
-
-
+        
+            stateManager.DrawEvent += new StateManager.DrawHandler(Draw);
+            stateManager.LoadEvent += new StateManager.LoadHandler(Load);
             stateManager.UpdateEvent += new StateManager.UpdateHandler(Update);
 
+            
+
+        }
+
+        public void Load(ContentManager content) {
+            shipSprite = new Sprite(content.Load<Texture2D>("ship"));
+            laserSprite = new Sprite(content.Load<Texture2D>("laser"));
+
+            width = shipSprite.Texture.Width;
+            height = shipSprite.Texture.Height;
         }
 
         public void Draw(SpriteBatch spriteBatch) {
             Rectangle sourceRectangle = new Rectangle(0,0, width, height);
             Rectangle destinationRectangle = new Rectangle((int)Position.X, (int)Position.Y, width, height);
-            spriteBatch.Draw(Texture, destinationRectangle, sourceRectangle, Color.White, Rotation, new Vector2(width/2, height/2), SpriteEffects.None, 0f);
+            spriteBatch.Draw(shipSprite.Texture, destinationRectangle, sourceRectangle, Color.White, Rotation, new Vector2(width/2, height/2), SpriteEffects.None, 0f);
         }
 
         public void Update(GameTime gameTime) {
-            Console.WriteLine("Update");
+         
         }
 
 
@@ -98,7 +110,10 @@ namespace SpaceGame {
         }
 
         public void Shoot () {
-            
+            laserSprite.Position = Position;
+            Projectile laser = new Projectile(laserSprite);
+            laser.Rotation = Rotation;
+            laser.Speed = 1f;
         }
     }
 }

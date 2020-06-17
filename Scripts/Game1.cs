@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+
 namespace SpaceGame
 {
 
@@ -47,14 +48,16 @@ namespace SpaceGame
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            ship = new Ship(Content.Load<Texture2D>("ship"), new Vector2(240,240), 3, MathHelper.ToRadians(180), .1f);
             
+            ship = new Ship("ship", new Vector2(240,240), 3, MathHelper.ToRadians(180), .1f);
+            stateManager.Load(Content);
 
             // TODO: use this.Content to load your game content here
         }
 
         protected override void Update(GameTime gameTime)
         {
+            ship.Load(Content);
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
@@ -89,7 +92,7 @@ namespace SpaceGame
             
       
             spriteBatch.Begin();
-            ship.Draw(spriteBatch);
+            stateManager.Draw(spriteBatch);
             spriteBatch.End();
 
 
