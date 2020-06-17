@@ -92,6 +92,7 @@ namespace SpaceGame
             
       
             spriteBatch.Begin();
+            spriteBatch.Draw(Content.Load<Texture2D>("spaceBackground"),new Vector2(0,0),Color.White);
             stateManager.Draw(spriteBatch);
             spriteBatch.End();
 
