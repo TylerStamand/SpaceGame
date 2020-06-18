@@ -49,8 +49,6 @@ namespace SpaceGame {
                 Rotation = MathF.Atan(differenceY/differenceX) + (MathF.PI/2);
             }
             
-
-            Console.WriteLine($"({differenceX}, {differenceY}) Rotation: {Rotation}");
             Position = new Vector2(Position.X - (Speed * MathF.Sin(Rotation)), Position.Y + ( Speed * MathF.Cos(Rotation)));
             
         }
