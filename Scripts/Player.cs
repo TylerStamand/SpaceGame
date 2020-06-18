@@ -2,10 +2,10 @@ using System;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
-using System.Diagnostics;
+using Microsoft.Xna.Framework.Input;
 
 namespace SpaceGame {
-    public class Ship {
+    public class Player : Entity {
 
         private StateManager stateManager = StateManager.Instance;
         public float Rotation {get; set;}
@@ -13,55 +13,64 @@ namespace SpaceGame {
         public float RotationSpeed {get; set;}
         public Vector2 Position {
             get {
-                return shipSprite.Position;
+                return playerSprite.Position;
             }
             set {
-                shipSprite.Position = value;
+                playerSprite.Position = value;
             }
         }
 
         private string textureName;
-        private Texture2D shipTexture;
-        private Sprite shipSprite;
+        private Texture2D playerTexture;
+        private Sprite playerSprite;
         private Texture2D laserTexture;
         private int width;
         private int height;
 
-        public Ship(string textureName, Vector2 position, float speed = 1, float rotation = 0, float rotationSpeed = 1) {
+        public Player(string textureName, Vector2 position, float speed = 1, float rotation = 0, float rotationSpeed = 1) {
             this.textureName = textureName;
             Rotation = rotation;
             Speed = speed;
             RotationSpeed = rotationSpeed;
-            shipSprite = new Sprite();
-            shipSprite.Position = position;
-            
-        
-            stateManager.DrawEvent += new StateManager.DrawHandler(Draw);
-            stateManager.LoadEvent += new StateManager.LoadHandler(Load);
-            stateManager.UpdateEvent += new StateManager.UpdateHandler(Update);
-
-            
-
+            playerSprite = new Sprite();
+            playerSprite.Position = position;
         }
 
-        public void Load(ContentManager content) {
-            shipTexture = content.Load<Texture2D>(textureName);
-            shipSprite.Texture = shipTexture;
+        public override void Load(ContentManager content) {
+            playerTexture = content.Load<Texture2D>(textureName);
+            playerSprite.Texture = playerTexture;
             laserTexture = content.Load<Texture2D>("laser");
 
-            width = shipTexture.Width;
-            height = shipTexture.Height;
+            width = playerTexture.Width;
+            height = playerTexture.Height;
         }
 
-        public void Draw(SpriteBatch spriteBatch) {
+        public override void Draw(SpriteBatch spriteBatch) {
             Rectangle sourceRectangle = new Rectangle(0,0, width, height);
             Rectangle destinationRectangle = new Rectangle((int)Position.X, (int)Position.Y, width, height);
             
-            spriteBatch.Draw(shipSprite.Texture, shipSprite.Position, sourceRectangle, Color.White, Rotation, new Vector2(width/2, height/2), 1, SpriteEffects.None, 0f);
+            spriteBatch.Draw(playerSprite.Texture, playerSprite.Position, sourceRectangle, Color.White, Rotation, new Vector2(width/2, height/2), 1, SpriteEffects.None, 0f);
         }
 
-        public void Update(GameTime gameTime) {
-         
+        public override void Update(GameTime gameTime) {
+            KeyboardState state;
+            state = Keyboard.GetState();
+            if (state.IsKeyDown(Keys.A)) {
+                Move(Direction.right);
+            }
+            else if (state.IsKeyDown(Keys.D))
+            {
+                Move(Direction.left);
+            }
+            if(state.IsKeyDown(Keys.W)) {
+                Move(Direction.forward);
+            }
+            else if (state.IsKeyDown(Keys.S)) {
+                Move(Direction.backward);
+            }
+            if(state.IsKeyDown(Keys.Space)) {
+                Shoot();
+            }
         }
 
 
@@ -116,7 +125,7 @@ namespace SpaceGame {
                 Y = changeY + Position.Y;
             }
 
-            shipSprite.Position = new Vector2(X, Y);
+            playerSprite.Position = new Vector2(X, Y);
         }
 
         public void Shoot () {
