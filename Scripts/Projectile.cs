@@ -1,15 +1,23 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System;
+using System.Collections.Generic;
 
 namespace SpaceGame {
     public class Projectile {
         public Sprite Sprite {get; set;}
+
+        public Vector2  Position {
+            get {
+                return Sprite.Position;
+            }
+            set {
+                Sprite.Position = value;
+            }
+        }
         public float Rotation = 0;
         public float Speed = 1;
 
-
-        private StateManager stateManager = StateManager.Instance;
         private Rectangle sourceRectange; 
 
         private int screenW = Game1.graphics.PreferredBackBufferWidth;
@@ -32,6 +40,7 @@ namespace SpaceGame {
         public void Update(GameTime gameTime) {
              
             Move();
+            CheckCollision();
             
 
             if(Sprite.Position.X > screenW || Sprite.Position.X < 0
@@ -49,5 +58,26 @@ namespace SpaceGame {
             Vector2 newPosition = new Vector2(positionX - (Speed * MathF.Sin(Rotation)), positionY + ( Speed * MathF.Cos(Rotation)));
             Sprite.Position = newPosition;
         }
+
+        private void CheckCollision() {
+            
+
+            foreach(Entity entity in EntityManager.Instance.Entities) {
+
+                
+
+                if (Position.X < entity.Position.X + entity.Sprite.Texture.Width &&
+                    Position.X + Sprite.Texture.Width > entity.Position.X &&
+                    Position.Y< entity.Position.Y + entity.Sprite.Texture.Height &&
+                    Position.Y +Sprite.Texture.Height > entity.Position.X) {
+                    
+                   Console.WriteLine("Collision");
+                   entity.Die(); 
+
+
+                } 
+            }
+        } 
+
     }
 }

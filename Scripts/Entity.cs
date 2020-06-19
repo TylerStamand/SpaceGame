@@ -6,6 +6,18 @@ using Microsoft.Xna.Framework;
 
 namespace SpaceGame {
     public abstract class Entity {
+        
+
+        public bool isDead = false;
+        public Sprite Sprite {get; set;} = new Sprite();
+        public Vector2 Position {
+            get {
+                return Sprite.Position;
+            }
+            set {
+                Sprite.Position = value;
+            }
+        }
 
         public Entity() {
             StateManager.Instance.LoadEvent += new StateManager.LoadHandler(Load);
@@ -20,6 +32,10 @@ namespace SpaceGame {
         }
         public virtual void Draw(SpriteBatch spriteBatch) {
 
+        }
+
+        public virtual void Die() {
+            isDead = true;
         }
     }
 }

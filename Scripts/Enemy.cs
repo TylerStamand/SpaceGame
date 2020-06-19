@@ -7,17 +7,8 @@ using System;
 namespace SpaceGame {
     public class Enemy : Entity {
         public float Rotation {get; set;}
-        public Vector2 Position {
-            get {
-                return Sprite.Position;
-            }
-            set {
-                Sprite.Position = value;
-            }
-        }
+    
         public float Speed {get; set;} = 1;
-
-        private Sprite Sprite = new Sprite();
 
         private int screenW = Game1.graphics.PreferredBackBufferWidth ;
         private int screenH = Game1.graphics.PreferredBackBufferHeight;
@@ -34,6 +25,12 @@ namespace SpaceGame {
         }
 
         public override void Update(GameTime gameTime){
+            if(isDead) {
+                EntityManager.Instance.Entities.Remove(this);
+                StateManager.Instance.LoadEvent -= new StateManager.LoadHandler(Load);
+                StateManager.Instance.UpdateEvent -= new StateManager.UpdateHandler(Update);
+                StateManager.Instance.DrawEvent -= new StateManager.DrawHandler(Draw);
+            }
             Move();
         }
 

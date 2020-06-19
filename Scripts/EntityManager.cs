@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
@@ -8,19 +9,19 @@ using Microsoft.Xna.Framework;
 namespace SpaceGame {
     public class EntityManager {
         
+        public Player Player;
+        public List<Entity> Entities;
+
+        public int SpawnRateSeconds {get; set;} = 3;
         private Texture2D playerTexture;
         private Texture2D enemyTexture;
         private Random rand = new Random();
         private int screenW = Game1.graphics.PreferredBackBufferWidth;
         private int screenH = Game1.graphics.PreferredBackBufferHeight;
-        private float timeSinceLastEnemy = 0;
-
-        public Player Player;
+        private double timeSinceLastEnemy = 0;
         private EntityManager() {
             Player = new Player("ship", new Vector2(240,240), 3, MathHelper.ToRadians(180), .1f);
-
-            
-    
+            Entities = new List<Entity>();
         }
         private static EntityManager instance = null;
         public static EntityManager Instance {
@@ -38,16 +39,17 @@ namespace SpaceGame {
         }
 
         public void Update(GameTime gameTime) {
-            if(gameTime.TotalGameTime.Seconds - timeSinceLastEnemy > 5) {
+            if(gameTime.TotalGameTime.TotalSeconds - timeSinceLastEnemy > SpawnRateSeconds) {
                 SpawnEnemy();
-                timeSinceLastEnemy = gameTime.TotalGameTime.Seconds;
+                timeSinceLastEnemy = gameTime.TotalGameTime.TotalSeconds;
             }
+    
         }
 
         public void SpawnEnemy() {
             Enemy enemy = new Enemy(enemyTexture);
             enemy.Position = new Vector2(rand.Next(screenW + 1), rand.Next(screenH + 1));
-
+            Entities.Add(enemy);
         }
     }
 }

@@ -11,18 +11,8 @@ namespace SpaceGame {
         public float Rotation {get; set;}
         public float Speed {get; set;}
         public float RotationSpeed {get; set;}
-        public Vector2 Position {
-            get {
-                return playerSprite.Position;
-            }
-            set {
-                playerSprite.Position = value;
-            }
-        }
-
         private string textureName;
         private Texture2D playerTexture;
-        private Sprite playerSprite;
         private Texture2D laserTexture;
         private int width;
         private int height;
@@ -32,13 +22,13 @@ namespace SpaceGame {
             Rotation = rotation;
             Speed = speed;
             RotationSpeed = rotationSpeed;
-            playerSprite = new Sprite();
-            playerSprite.Position = position;
+            Sprite = new Sprite();
+            Sprite.Position = position;
         }
 
         public override void Load(ContentManager content) {
             playerTexture = content.Load<Texture2D>(textureName);
-            playerSprite.Texture = playerTexture;
+            Sprite.Texture = playerTexture;
             laserTexture = content.Load<Texture2D>("laser");
 
             width = playerTexture.Width;
@@ -49,7 +39,7 @@ namespace SpaceGame {
             Rectangle sourceRectangle = new Rectangle(0,0, width, height);
             Rectangle destinationRectangle = new Rectangle((int)Position.X, (int)Position.Y, width, height);
             
-            spriteBatch.Draw(playerSprite.Texture, playerSprite.Position, sourceRectangle, Color.White, Rotation, new Vector2(width/2, height/2), 1, SpriteEffects.None, 0f);
+            spriteBatch.Draw(Sprite.Texture, Sprite.Position, sourceRectangle, Color.White, Rotation, new Vector2(width/2, height/2), 1, SpriteEffects.None, 0f);
         }
 
         public override void Update(GameTime gameTime) {
@@ -125,7 +115,7 @@ namespace SpaceGame {
                 Y = changeY + Position.Y;
             }
 
-            playerSprite.Position = new Vector2(X, Y);
+            Sprite.Position = new Vector2(X, Y);
         }
 
         public void Shoot () {
