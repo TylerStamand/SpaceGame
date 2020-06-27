@@ -1,21 +1,17 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System;
+using Microsoft.Xna.Framework.Content;
 using System.Collections.Generic;
 
-namespace SpaceGame {
-    public class Projectile {
-        public Sprite Sprite {get; set;}
 
-        public Vector2  Position {
-            get {
-                return Sprite.Position;
-            }
-            set {
-                Sprite.Position = value;
-            }
-        }
-        public float Rotation = 0;
+namespace SpaceGame {
+    public class Projectile : Entity {
+        
+        Texture2D dot = EntityManager.Instance.Dot;
+        Texture2D line = EntityManager.Instance.Line;
+    
+       
         public float Speed = 1;
 
         private Rectangle sourceRectange; 
@@ -26,28 +22,24 @@ namespace SpaceGame {
         public Projectile(Sprite sprite) {
             Sprite = sprite;
             sourceRectange = new Rectangle(0,0,Sprite.Texture.Width, Sprite.Texture.Height);
+        }
 
-            StateManager.Instance.DrawEvent += new StateManager.DrawHandler(Draw);
-            StateManager.Instance.UpdateEvent += new StateManager.UpdateHandler(Update);
+        public override void Load(ContentManager contentManager) {
+            
+        }
+        public override void Draw(SpriteBatch spriteBatch) {
+           
+            spriteBatch.Draw(Sprite.Texture, Sprite.Position, sourceRectange, Color.White, Rotation,
+            new Vector2(Sprite.Texture.Width/2, Sprite.Texture.Height/2), 1 , SpriteEffects.None, 1f);
+
             
         }
 
-        public void Draw(SpriteBatch spriteBatch) {
-            spriteBatch.Draw(Sprite.Texture, Sprite.Position, sourceRectange, Color.White, Rotation,
-             new Vector2(Sprite.Texture.Width/2, Sprite.Texture.Height/2), 1 , SpriteEffects.None, 1f);
-        }
-
-        public void Update(GameTime gameTime) {
-             
+        public override void Update(GameTime gameTime) {
+            base.Update(gameTime);
+            
             Move();
             CheckCollision();
-            
-
-            if(Sprite.Position.X > screenW || Sprite.Position.X < 0
-            || Sprite.Position.Y > screenH || Sprite.Position.Y < 0) {
-                StateManager.Instance.DrawEvent -= new StateManager.DrawHandler(Draw);
-                StateManager.Instance.UpdateEvent -= new StateManager.UpdateHandler(Update);
-            }
 
         }
 
@@ -63,21 +55,20 @@ namespace SpaceGame {
             
 
             foreach(Entity entity in EntityManager.Instance.Entities) {
-
                 
+                if(entity.isDead) {
+                    continue;
+                }
 
-                if (Position.X < entity.Position.X + entity.Sprite.Texture.Width &&
-                    Position.X + Sprite.Texture.Width > entity.Position.X &&
-                    Position.Y< entity.Position.Y + entity.Sprite.Texture.Height &&
-                    Position.Y +Sprite.Texture.Height > entity.Position.X) {
-                    
-                   Console.WriteLine("Collision");
-                   entity.Die(); 
+                if(Collision.CheckCollision(this, entity)) {
+                    entity.Die();
+                }
 
-
-                } 
             }
         } 
+
+
+       
 
     }
 }

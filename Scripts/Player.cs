@@ -8,7 +8,6 @@ namespace SpaceGame {
     public class Player : Entity {
 
         private StateManager stateManager = StateManager.Instance;
-        public float Rotation {get; set;}
         public float Speed {get; set;}
         public float RotationSpeed {get; set;}
         private string textureName;
@@ -39,10 +38,13 @@ namespace SpaceGame {
             Rectangle sourceRectangle = new Rectangle(0,0, width, height);
             Rectangle destinationRectangle = new Rectangle((int)Position.X, (int)Position.Y, width, height);
             
+            
             spriteBatch.Draw(Sprite.Texture, Sprite.Position, sourceRectangle, Color.White, Rotation, new Vector2(width/2, height/2), 1, SpriteEffects.None, 0f);
         }
 
         public override void Update(GameTime gameTime) {
+            base.Update(gameTime);
+            
             KeyboardState state;
             state = Keyboard.GetState();
             if (state.IsKeyDown(Keys.A)) {

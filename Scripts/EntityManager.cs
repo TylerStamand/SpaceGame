@@ -13,6 +13,9 @@ namespace SpaceGame {
         public List<Entity> Entities;
 
         public int SpawnRateSeconds {get; set;} = 3;
+
+        public Texture2D Dot;
+        public Texture2D Line;
         private Texture2D playerTexture;
         private Texture2D enemyTexture;
         private Random rand = new Random();
@@ -35,7 +38,8 @@ namespace SpaceGame {
         public void Load(ContentManager contentManager) {
             playerTexture = contentManager.Load<Texture2D>("ship");
             enemyTexture = contentManager.Load<Texture2D>("ship");
-           
+            Dot = contentManager.Load<Texture2D>("dot");
+            Line = contentManager.Load<Texture2D>("line");
         }
 
         public void Update(GameTime gameTime) {

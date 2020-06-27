@@ -8,6 +8,13 @@ namespace SpaceGame {
 
         public float Rotation {get; set;}
 
+        public int Width {get {
+            return Texture.Width;
+        }}
+
+        public int Height {get {
+            return Texture.Height;
+        }}
         public Sprite() {
             
         }

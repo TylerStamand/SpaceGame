@@ -63,9 +63,9 @@ namespace SpaceGame
 
         protected override void Draw(GameTime gameTime)
         {
-            graphics.GraphicsDevice.Clear(Color.Gray);
+            graphics.GraphicsDevice.Clear(Color.White);
             
-      
+
             spriteBatch.Begin();
             spriteBatch.Draw(Content.Load<Texture2D>("spaceBackground"),new Vector2(0,0),Color.White);
             stateManager.Draw(spriteBatch);
