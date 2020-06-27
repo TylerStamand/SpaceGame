@@ -12,7 +12,7 @@ namespace SpaceGame {
         public Player Player;
         public List<Entity> Entities;
 
-        public int SpawnRateSeconds {get; set;} = 3;
+        public int EnemySpawnRateSeconds {get; set;} = 1;
 
         public Texture2D Dot;
         public Texture2D Line;
@@ -23,6 +23,11 @@ namespace SpaceGame {
         private int screenH = Game1.graphics.PreferredBackBufferHeight;
         private double timeSinceLastEnemy = 0;
         private EntityManager() {
+            StateManager.Instance.LoadEvent += new StateManager.LoadHandler(Load);
+            StateManager.Instance.UpdateEvent += new StateManager.UpdateHandler(Update);
+
+
+
             Player = new Player("ship", new Vector2(240,240), 3, MathHelper.ToRadians(180), .1f);
             Entities = new List<Entity>();
         }
@@ -43,7 +48,7 @@ namespace SpaceGame {
         }
 
         public void Update(GameTime gameTime) {
-            if(gameTime.TotalGameTime.TotalSeconds - timeSinceLastEnemy > SpawnRateSeconds) {
+            if(gameTime.TotalGameTime.TotalSeconds - timeSinceLastEnemy > EnemySpawnRateSeconds) {
                 SpawnEnemy();
                 timeSinceLastEnemy = gameTime.TotalGameTime.TotalSeconds;
             }

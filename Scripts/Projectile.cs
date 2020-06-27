@@ -62,6 +62,7 @@ namespace SpaceGame {
 
                 if(Collision.CheckCollision(this, entity)) {
                     entity.Die();
+                    ScoreManager.Instance.Score += 1;
                 }
 
             }

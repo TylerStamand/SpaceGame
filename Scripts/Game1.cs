@@ -17,6 +17,8 @@ namespace SpaceGame
     public class Game1 : Game
     {
         public static GraphicsDeviceManager graphics;
+
+        public ScoreManager scoreManager;
         public EntityManager entityManager;
         public StateManager stateManager;
         private SpriteBatch spriteBatch;
@@ -32,6 +34,8 @@ namespace SpaceGame
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            //These declerations need to happen in order to start the Load function
+            scoreManager = ScoreManager.Instance;
             entityManager = EntityManager.Instance;
             stateManager = StateManager.Instance;
             base.Initialize();
@@ -40,9 +44,6 @@ namespace SpaceGame
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            
-            entityManager.Load(Content);
             stateManager.Load(Content);
 
             // TODO: use this.Content to load your game content here
@@ -53,7 +54,7 @@ namespace SpaceGame
             
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            entityManager.Update(gameTime);
+
             stateManager.Update(gameTime);
 
             base.Update(gameTime);
@@ -67,8 +68,10 @@ namespace SpaceGame
             
 
             spriteBatch.Begin();
-            spriteBatch.Draw(Content.Load<Texture2D>("spaceBackground"),new Vector2(0,0),Color.White);
+            
+            spriteBatch.Draw(Content.Load<Texture2D>("spaceBackground"), new Vector2(0,0), Color.White);
             stateManager.Draw(spriteBatch);
+            
             spriteBatch.End();
 
 

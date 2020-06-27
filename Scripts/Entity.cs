@@ -76,8 +76,6 @@ namespace SpaceGame {
         }
 
         protected void DrawDebugDots(SpriteBatch spriteBatch) {
-            //THIS OFFSET IS CONFUSING
-
             Rectangle sourceRectangle = new Rectangle(0,0, 32,32);
             spriteBatch.Draw(EntityManager.Instance.Dot, new Vector2(LL.X - 16, LL.Y - 16), sourceRectangle, Color.White, Rotation, new Vector2(16, 16), 1, SpriteEffects.None, 0f);
             spriteBatch.Draw(EntityManager.Instance.Dot, new Vector2(LR.X - 32, LR.Y -32), Color.White);
