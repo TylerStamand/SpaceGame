@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System;
+using System.Linq;
 using Microsoft.Xna.Framework.Content;
 using System.Collections.Generic;
 
@@ -49,12 +50,15 @@ namespace SpaceGame {
             float positionY = Sprite.Position.Y;
             Vector2 newPosition = new Vector2(positionX - (Speed * MathF.Sin(Rotation)), positionY + ( Speed * MathF.Cos(Rotation)));
             Sprite.Position = newPosition;
+            if(newPosition.X > screenW || newPosition.X < 0 || newPosition.Y > screenH || newPosition.Y < 0) {
+                Die();
+            }
         }
 
         private void CheckCollision() {
             
 
-            foreach(Entity entity in EntityManager.Instance.Entities) {
+            foreach(Entity entity in EntityManager.Instance.Entities.OfType<Enemy>()) {
                 
                 if(entity.isDead) {
                     continue;

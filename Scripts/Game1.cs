@@ -21,6 +21,8 @@ namespace SpaceGame
         public ScoreManager scoreManager;
         public EntityManager entityManager;
         public StateManager stateManager;
+
+        public AssetManager assetManager;
         private SpriteBatch spriteBatch;
 
 
@@ -35,9 +37,15 @@ namespace SpaceGame
         {
             // TODO: Add your initialization logic here
             //These declerations need to happen in order to start the Load function
+            stateManager = StateManager.Instance;
+            assetManager = AssetManager.Instance;
             scoreManager = ScoreManager.Instance;
             entityManager = EntityManager.Instance;
-            stateManager = StateManager.Instance;
+           
+
+            
+
+          
             base.Initialize();
         }
 
@@ -68,7 +76,7 @@ namespace SpaceGame
             
 
             spriteBatch.Begin();
-            
+
             spriteBatch.Draw(Content.Load<Texture2D>("spaceBackground"), new Vector2(0,0), Color.White);
             stateManager.Draw(spriteBatch);
             

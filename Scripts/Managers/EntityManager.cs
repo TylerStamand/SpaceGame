@@ -25,10 +25,6 @@ namespace SpaceGame {
         private EntityManager() {
             StateManager.Instance.LoadEvent += new StateManager.LoadHandler(Load);
             StateManager.Instance.UpdateEvent += new StateManager.UpdateHandler(Update);
-
-
-
-            Player = new Player("ship", new Vector2(240,240), 3, MathHelper.ToRadians(180), .1f);
             Entities = new List<Entity>();
         }
         private static EntityManager instance = null;
@@ -41,10 +37,14 @@ namespace SpaceGame {
             }
         }
         public void Load(ContentManager contentManager) {
-            playerTexture = contentManager.Load<Texture2D>("ship");
+            playerTexture = 
             enemyTexture = contentManager.Load<Texture2D>("ship");
+            contentManager.Load<Texture2D>("laser");
             Dot = contentManager.Load<Texture2D>("dot");
             Line = contentManager.Load<Texture2D>("line");
+
+            //Player initialization is put here in order to avoid looping. Attemps to use entitymanager while it is initializing
+            Player = new Player("ship", new Vector2(240,240), 3, MathHelper.ToRadians(180), .1f);
         }
 
         public void Update(GameTime gameTime) {
@@ -56,9 +56,10 @@ namespace SpaceGame {
         }
 
         public void SpawnEnemy() {
+            
             Enemy enemy = new Enemy(enemyTexture);
             enemy.Position = new Vector2(rand.Next(screenW + 1), rand.Next(screenH + 1));
-            Entities.Add(enemy);
+            EntityManager.Instance.Entities.Add(enemy);
         }
     }
 }

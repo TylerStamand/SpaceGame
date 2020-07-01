@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
@@ -33,6 +35,7 @@ namespace SpaceGame {
         }
 
         public Entity() {
+            EntityManager.Instance.Entities.Add(this);
             StateManager.Instance.LoadEvent += new StateManager.LoadHandler(Load);
             StateManager.Instance.UpdateEvent += new StateManager.UpdateHandler(Update);
             StateManager.Instance.DrawEvent += new StateManager.DrawHandler(Draw);
@@ -41,6 +44,14 @@ namespace SpaceGame {
             
         }
         public virtual void Update(GameTime gameTime) {
+               if(isDead) {
+                EntityManager.Instance.Entities.Remove(this);
+                StateManager.Instance.LoadEvent -= new StateManager.LoadHandler(Load);
+                StateManager.Instance.UpdateEvent -= new StateManager.UpdateHandler(Update);
+                StateManager.Instance.DrawEvent -= new StateManager.DrawHandler(Draw);
+                
+            }
+       
             updatePositions();
         }
         public virtual void Draw(SpriteBatch spriteBatch) {

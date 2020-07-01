@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Input;
 namespace SpaceGame {
     public class Player : Entity {
 
-        private StateManager stateManager = StateManager.Instance;
+        
         public float Speed {get; set;}
         public float RotationSpeed {get; set;}
         private string textureName;
@@ -23,16 +23,16 @@ namespace SpaceGame {
             RotationSpeed = rotationSpeed;
             Sprite = new Sprite();
             Sprite.Position = position;
-        }
 
-        public override void Load(ContentManager content) {
-            playerTexture = content.Load<Texture2D>(textureName);
+            playerTexture = AssetManager.Instance.Assets[textureName];
             Sprite.Texture = playerTexture;
-            laserTexture = content.Load<Texture2D>("laser");
+            laserTexture = AssetManager.Instance.Assets["laser"];
 
             width = playerTexture.Width;
             height = playerTexture.Height;
         }
+
+    
 
         public override void Draw(SpriteBatch spriteBatch) {
             Rectangle sourceRectangle = new Rectangle(0,0, width, height);
