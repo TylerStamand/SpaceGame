@@ -12,7 +12,7 @@ namespace SpaceGame {
         public Player Player;
         public List<Entity> Entities;
 
-        public int EnemySpawnRateSeconds {get; set;} = 1;
+        public float EnemySpawnRateSeconds {get; set;} = 3;
 
         public Texture2D Dot;
         public Texture2D Line;
@@ -48,10 +48,7 @@ namespace SpaceGame {
         }
 
         public void Update(GameTime gameTime) {
-            if(gameTime.TotalGameTime.TotalSeconds - timeSinceLastEnemy > EnemySpawnRateSeconds) {
-                SpawnEnemy();
-                timeSinceLastEnemy = gameTime.TotalGameTime.TotalSeconds;
-            }
+            CheckToSpawnEnemy(gameTime);
     
         }
 
@@ -60,6 +57,17 @@ namespace SpaceGame {
             Enemy enemy = new Enemy(enemyTexture);
             enemy.Position = new Vector2(rand.Next(screenW + 1), rand.Next(screenH + 1));
             EntityManager.Instance.Entities.Add(enemy);
+        }
+
+        private void CheckToSpawnEnemy(GameTime gameTime) {
+            if (gameTime.TotalGameTime.TotalSeconds - timeSinceLastEnemy > EnemySpawnRateSeconds)
+            {
+                SpawnEnemy();
+                timeSinceLastEnemy = gameTime.TotalGameTime.TotalSeconds;
+                if(!(EnemySpawnRateSeconds <= .25)) {
+                    EnemySpawnRateSeconds -= .25f;
+                }
+            }
         }
     }
 }

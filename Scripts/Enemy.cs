@@ -27,6 +27,9 @@ namespace SpaceGame {
             base.Update(gameTime);
          
             Move();
+            if(CheckPlayerCollision()) {
+                ScoreManager.Instance.Score = 0;
+            }
         }
 
 
@@ -43,6 +46,10 @@ namespace SpaceGame {
             
             Position = new Vector2(Position.X - (Speed * MathF.Sin(Rotation)), Position.Y + ( Speed * MathF.Cos(Rotation)));
             
+        }
+        private bool CheckPlayerCollision() {
+            Player player = EntityManager.Instance.Player;
+            return Collision.CheckCollision(player, this);
         }
     }
 }
