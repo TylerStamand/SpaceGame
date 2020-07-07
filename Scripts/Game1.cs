@@ -36,6 +36,8 @@ namespace SpaceGame
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            this.Components.Add(new GUI(this));
+
             //These declerations need to happen in order to start the Load function
             stateManager = StateManager.Instance;
             assetManager = AssetManager.Instance;
