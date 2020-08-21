@@ -5,7 +5,7 @@ using System;
 
 
 namespace SpaceGame {
-    public class Enemy : Entity {
+    public class Enemy : Character {
     
         public float Speed {get; set;} = 2;
 
@@ -25,11 +25,14 @@ namespace SpaceGame {
 
         public override void Update(GameTime gameTime){
             base.Update(gameTime);
-         
-            Move();
-            if(CheckPlayerCollision()) {
-                ScoreManager.Instance.Score = 0;
+            if(!isDead) {
+                Move();
+                if (CheckPlayerCollision())
+                {
+                    PlayerCollision();
+                }
             }
+        
         }
 
 
@@ -50,6 +53,10 @@ namespace SpaceGame {
         private bool CheckPlayerCollision() {
             Player player = EntityManager.Instance.Player;
             return Collision.CheckCollision(player, this);
+        }
+        private void PlayerCollision() {
+            this.Die();
+            EntityManager.Instance.Player.Damage(25);
         }
     }
 }

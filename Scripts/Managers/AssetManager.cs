@@ -26,6 +26,7 @@ namespace SpaceGame {
             Assets.Add("laser", contentManager.Load<Texture2D>("laser"));
             Assets.Add("dot", contentManager.Load<Texture2D>("dot"));
             Assets.Add("line", contentManager.Load<Texture2D>("line"));
+            Assets.Add("Heart", contentManager.Load<Texture2D>("Heart"));
            
         }
 

@@ -9,11 +9,15 @@ using Microsoft.Xna.Framework;
 namespace SpaceGame {
     public abstract class Entity {
         
-        public Vector2 UR = new Vector2(), 
+      
+
+        public Vector2 UR = new Vector2(),
                 UL = new Vector2(), 
                 LR = new Vector2(), 
                 LL = new Vector2(),
                 Center = new Vector2();
+
+        
         public bool isDead = false;
         public Sprite Sprite {get; set;} = new Sprite();
         public Vector2 Position {
@@ -49,6 +53,7 @@ namespace SpaceGame {
                 StateManager.Instance.LoadEvent -= new StateManager.LoadHandler(Load);
                 StateManager.Instance.UpdateEvent -= new StateManager.UpdateHandler(Update);
                 StateManager.Instance.DrawEvent -= new StateManager.DrawHandler(Draw);
+                
                 
             }
        
@@ -93,5 +98,7 @@ namespace SpaceGame {
             spriteBatch.Draw(EntityManager.Instance.Dot, new Vector2(UL.X - 32, UL.Y -32), Color.White);
             spriteBatch.Draw(EntityManager.Instance.Dot, new Vector2(UR.X - 32, UR.Y -32), Color.White);
         }
+
+     
     }
 }

@@ -8,10 +8,7 @@ using System.Collections.Generic;
 
 namespace SpaceGame {
     public class Projectile : Entity {
-        
-        Texture2D dot = EntityManager.Instance.Dot;
-        Texture2D line = EntityManager.Instance.Line;
-    
+
        
         public float Speed = 1;
 
@@ -30,7 +27,7 @@ namespace SpaceGame {
         }
         public override void Draw(SpriteBatch spriteBatch) {
            
-            spriteBatch.Draw(Sprite.Texture, Sprite.Position, sourceRectange, Color.White, Rotation,
+            spriteBatch.Draw(Sprite.Texture, Sprite.Position, sourceRectange, Sprite.Color, Rotation,
             new Vector2(Sprite.Texture.Width/2, Sprite.Texture.Height/2), 1 , SpriteEffects.None, 1f);
 
             

@@ -16,7 +16,6 @@ namespace SpaceGame {
 
         public Texture2D Dot;
         public Texture2D Line;
-        private Texture2D playerTexture;
         private Texture2D enemyTexture;
         private Random rand = new Random();
         private int screenW = Game1.graphics.PreferredBackBufferWidth;
@@ -37,11 +36,11 @@ namespace SpaceGame {
             }
         }
         public void Load(ContentManager contentManager) {
-            playerTexture = 
-            enemyTexture = contentManager.Load<Texture2D>("ship");
-            contentManager.Load<Texture2D>("laser");
-            Dot = contentManager.Load<Texture2D>("dot");
-            Line = contentManager.Load<Texture2D>("line");
+        
+            enemyTexture = AssetManager.Instance.Assets["ship"];
+            Dot = AssetManager.Instance.Assets["dot"];
+            Line = AssetManager.Instance.Assets["line"];
+            
 
             //Player initialization is put here in order to avoid looping. Attemps to use entitymanager while it is initializing
             Player = new Player("ship", new Vector2(240,240), 3, MathHelper.ToRadians(180), .1f);

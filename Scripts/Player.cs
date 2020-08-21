@@ -1,11 +1,12 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 namespace SpaceGame {
-    public class Player : Entity {
+    public class Player : Character {
 
         
         public float Speed {get; set;}
@@ -15,6 +16,12 @@ namespace SpaceGame {
         private Texture2D laserTexture;
         private int width;
         private int height;
+        private int weaponLevel = 0;
+
+       
+
+        private List<Color> laserColors = new List<Color>() {Color.Red, Color.Blue, Color.Green};
+
 
         public Player(string textureName, Vector2 position, float speed = 1, float rotation = 0, float rotationSpeed = 1) {
             this.textureName = textureName;
@@ -30,6 +37,8 @@ namespace SpaceGame {
 
             width = playerTexture.Width;
             height = playerTexture.Height;
+
+            health = new Health(100);
         }
 
     
@@ -40,6 +49,7 @@ namespace SpaceGame {
             
             
             spriteBatch.Draw(Sprite.Texture, Sprite.Position, sourceRectangle, Color.White, Rotation, new Vector2(width/2, height/2), 1, SpriteEffects.None, 0f);
+            health.DrawHealth(spriteBatch, Sprite.Position);
         }
 
         public override void Update(GameTime gameTime) {
@@ -121,11 +131,16 @@ namespace SpaceGame {
         }
 
         public void Shoot () {
-            Sprite laserSprite = new Sprite(laserTexture);
-            laserSprite.Position = Position;
+            Sprite laserSprite = new Sprite(laserTexture, Position, laserColors[weaponLevel]);
             Projectile laser = new Projectile(laserSprite);
             laser.Rotation = Rotation;
             laser.Speed = 10f;
+        }
+
+        public void UpgradeWeapon() {
+            if(weaponLevel < laserColors.Count - 1) {
+                weaponLevel++;
+            }
         }
     }
 }
