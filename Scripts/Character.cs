@@ -5,6 +5,16 @@ namespace SpaceGame {
 
         protected Health health;
 
+        public Character(int healthPoints) {
+            health = new Health(healthPoints);
+        } 
+
+        public override void  Draw(SpriteBatch spriteBatch){
+            base.Draw(spriteBatch);
+            
+            health.DrawHealth(spriteBatch, Position);
+        }
+
         public void Damage(int damageDelt)
         {
             health.CurrentHealth -= damageDelt;
@@ -12,7 +22,7 @@ namespace SpaceGame {
                 health.CurrentHealth = 0;
             }
             if(health.CurrentHealth == 0) {
-                this.Die();
+                this.Destroy();
             }
         }
 

@@ -18,7 +18,7 @@ namespace SpaceGame {
                 Center = new Vector2();
 
         
-        public bool isDead = false;
+        public bool isDestroyed = false;
         public Sprite Sprite {get; set;} = new Sprite();
         public Vector2 Position {
             get {
@@ -48,11 +48,8 @@ namespace SpaceGame {
             
         }
         public virtual void Update(GameTime gameTime) {
-               if(isDead) {
+               if(isDestroyed) {
                 EntityManager.Instance.Entities.Remove(this);
-                StateManager.Instance.LoadEvent -= new StateManager.LoadHandler(Load);
-                StateManager.Instance.UpdateEvent -= new StateManager.UpdateHandler(Update);
-                StateManager.Instance.DrawEvent -= new StateManager.DrawHandler(Draw);
                 
                 
             }
@@ -63,9 +60,13 @@ namespace SpaceGame {
            
         }
 
-        public virtual void Die() {
+        public virtual void Destroy() {
             
-            isDead = true;
+            isDestroyed = true;
+            StateManager.Instance.LoadEvent -= new StateManager.LoadHandler(Load);
+            StateManager.Instance.UpdateEvent -= new StateManager.UpdateHandler(Update);
+            StateManager.Instance.DrawEvent -= new StateManager.DrawHandler(Draw);
+
         }
 
         protected void updatePositions() {

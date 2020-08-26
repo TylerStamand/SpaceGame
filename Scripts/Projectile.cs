@@ -48,7 +48,7 @@ namespace SpaceGame {
             Vector2 newPosition = new Vector2(positionX - (Speed * MathF.Sin(Rotation)), positionY + ( Speed * MathF.Cos(Rotation)));
             Sprite.Position = newPosition;
             if(newPosition.X > screenW || newPosition.X < 0 || newPosition.Y > screenH || newPosition.Y < 0) {
-                Die();
+                Destroy();
             }
         }
 
@@ -57,12 +57,16 @@ namespace SpaceGame {
 
             foreach(Entity entity in EntityManager.Instance.Entities.OfType<Enemy>()) {
                 
-                if(entity.isDead) {
+                if(entity.isDestroyed) {
                     continue;
                 }
 
                 if(Collision.CheckCollision(this, entity)) {
-                    entity.Die();
+                    if(entity is Character) {
+                        Character character = (Character)entity;
+                        character.Damage(25);
+                    }
+                    this.Destroy();
                     ScoreManager.Instance.Score += 1;
                 }
 

@@ -4,34 +4,39 @@ using Microsoft.Xna.Framework;
 using System;
 
 
+
 namespace SpaceGame {
     public class Enemy : Character {
     
         public float Speed {get; set;} = 2;
+        
 
         private int screenW = Game1.graphics.PreferredBackBufferWidth ;
         private int screenH = Game1.graphics.PreferredBackBufferHeight;
        
         private Rectangle sourceRectangle;
+
+        
         
 
-        public Enemy(Texture2D texture) {
+        public Enemy(Texture2D texture, int healthPoints = 100) : base(healthPoints) {
             Sprite.Texture = texture;
             sourceRectangle = new Rectangle(0,0, texture.Width, texture.Height);
         }
         public override void Draw(SpriteBatch spriteBatch) {
+            base.Draw(spriteBatch);
             spriteBatch.Draw(Sprite.Texture, Sprite.Position, sourceRectangle, Color.Red, Rotation, new Vector2(Sprite.Texture.Width/2, Sprite.Texture.Height/2), 1, SpriteEffects.None, 0f);
         }
 
         public override void Update(GameTime gameTime){
             base.Update(gameTime);
-            if(!isDead) {
+          
                 Move();
                 if (CheckPlayerCollision())
                 {
                     PlayerCollision();
                 }
-            }
+            
         
         }
 
@@ -55,7 +60,7 @@ namespace SpaceGame {
             return Collision.CheckCollision(player, this);
         }
         private void PlayerCollision() {
-            this.Die();
+            this.Destroy();
             EntityManager.Instance.Player.Damage(25);
         }
     }

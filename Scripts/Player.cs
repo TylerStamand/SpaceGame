@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Input;
 namespace SpaceGame {
     public class Player : Character {
 
-        
+        GameTime gameTime;
         public float Speed {get; set;}
         public float RotationSpeed {get; set;}
         private string textureName;
@@ -17,13 +17,14 @@ namespace SpaceGame {
         private int width;
         private int height;
         private int weaponLevel = 0;
+        private float weaponDelay = 0.2f;
 
        
 
         private List<Color> laserColors = new List<Color>() {Color.Red, Color.Blue, Color.Green};
 
 
-        public Player(string textureName, Vector2 position, float speed = 1, float rotation = 0, float rotationSpeed = 1) {
+        public Player(string textureName, Vector2 position, float speed = 1, float rotation = 0, float rotationSpeed = 1) : base(100) {
             this.textureName = textureName;
             Rotation = rotation;
             Speed = speed;
@@ -38,23 +39,24 @@ namespace SpaceGame {
             width = playerTexture.Width;
             height = playerTexture.Height;
 
-            health = new Health(100);
+          
         }
 
     
 
         public override void Draw(SpriteBatch spriteBatch) {
+            base.Draw(spriteBatch);
             Rectangle sourceRectangle = new Rectangle(0,0, width, height);
             Rectangle destinationRectangle = new Rectangle((int)Position.X, (int)Position.Y, width, height);
             
             
             spriteBatch.Draw(Sprite.Texture, Sprite.Position, sourceRectangle, Color.White, Rotation, new Vector2(width/2, height/2), 1, SpriteEffects.None, 0f);
-            health.DrawHealth(spriteBatch, Sprite.Position);
+            
         }
 
         public override void Update(GameTime gameTime) {
             base.Update(gameTime);
-            
+            this.gameTime = gameTime;
             KeyboardState state;
             state = Keyboard.GetState();
             if (state.IsKeyDown(Keys.A)) {
@@ -130,11 +132,19 @@ namespace SpaceGame {
             Sprite.Position = new Vector2(X, Y);
         }
 
+        double timeSinceLastShot;
         public void Shoot () {
             Sprite laserSprite = new Sprite(laserTexture, Position, laserColors[weaponLevel]);
-            Projectile laser = new Projectile(laserSprite);
-            laser.Rotation = Rotation;
-            laser.Speed = 10f;
+            
+            if (gameTime.TotalGameTime.TotalSeconds - timeSinceLastShot > weaponDelay)
+            {
+                Projectile laser = new Projectile(laserSprite);
+                laser.Rotation = Rotation;
+                laser.Speed = 10f;
+                timeSinceLastShot = gameTime.TotalGameTime.TotalSeconds;
+           
+            }
+            
         }
 
         public void UpgradeWeapon() {

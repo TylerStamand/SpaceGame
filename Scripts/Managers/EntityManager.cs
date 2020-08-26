@@ -55,7 +55,7 @@ namespace SpaceGame {
             
             Enemy enemy = new Enemy(enemyTexture);
             enemy.Position = new Vector2(rand.Next(screenW + 1), rand.Next(screenH + 1));
-            EntityManager.Instance.Entities.Add(enemy);
+           
         }
 
         private void CheckToSpawnEnemy(GameTime gameTime) {
@@ -63,7 +63,7 @@ namespace SpaceGame {
             {
                 SpawnEnemy();
                 timeSinceLastEnemy = gameTime.TotalGameTime.TotalSeconds;
-                if(!(EnemySpawnRateSeconds <= .25)) {
+                if(!(EnemySpawnRateSeconds <= .75)) {
                     EnemySpawnRateSeconds -= .25f;
                 }
             }
