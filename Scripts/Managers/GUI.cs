@@ -8,15 +8,10 @@ namespace SpaceGame {
         }
 
         public override void InitializeComponent() {
-            Button button = new Button() {
-                Text = "Upgrade Weapon",
-                Size = new Vector2(200, 50),
-                BackgroundColor = Color.Red
-            };
-            
-            button.Clicked += Button_Clicked;
+            InititiallizeUpgradeButtons();
+            // button.Clicked += Button_Clicked;
          
-            Controls.Add(button);
+            // Controls.Add(button);
         }
 
         private void Button_Clicked(object sender, EventArgs e) {
@@ -25,6 +20,15 @@ namespace SpaceGame {
             EntityManager.Instance.Player.UpgradeWeapon();
         }
 
-      
+
+        private void InititiallizeUpgradeButtons() {
+            Button upgradeWeaponBtn = new Button()
+            {
+                Text = "Upgrade Weapon",
+                Size = new Vector2(200, 50),
+                BackgroundColor = Color.Red
+            };
+
+        }
     }
 }
